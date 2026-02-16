@@ -939,3 +939,295 @@ input.btnTxt:hover {
   max-width: 100px;
 }
 
+/*--------------------------------
+CSS from to-check and geoserver.css
+---------------------------------*/
+
+/* Modal */
+div.wicket-modal h3.w_captionText {
+  color: var(--gs-primary-text-emphasis);
+  font-size: 12px;
+  font-weight: bold;
+  height: 1.4em;
+}
+div.wicket-modal .close-div {
+  margin-top: -2px;
+}
+
+/* Tab content */
+.tab-panel {
+  margin-top: 10px;
+}
+
+/* Help modal */
+.help p,
+.help ol,
+.help ul {
+  color: var(--gs-dark-text-emphasis);
+}
+.help ol li {
+  display: list-item;
+}
+
+/* action group above tables */
+ul.action-group li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+/* Forms */
+form ul,
+ul.form-data {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+fieldset { /* override blueprint's settings */
+  padding: 0 0 1em 0;
+  margin: 0 0 0.5em;
+  border: 0;
+}
+
+legend {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gs-primary);
+}
+legend a,
+legend li {
+  font-weight: normal;
+  font-size: 12px;
+}
+legend li {
+  padding-right: 0;
+}
+legend a.help-link {
+  height: 16px;
+  float: right;
+}
+
+/* internationalization */
+.i18n-panel {
+  margin-bottom: 5px;
+}
+.i18n-panel td {
+  vertical-align: top;
+}
+
+/* Unordered lists in page header and footer */
+.page-header ul,
+.page-footer ul {
+  margin: 0.2em; /* override blueprint's settings for unordered lists */
+  list-style-type: none;
+}
+.page-footer {
+  padding-top: 1em;
+}
+
+/* Palette */
+.palette-theme-default .palette-choices > div,
+.palette-theme-default .palette-selected > div {
+  width: 100%;
+  border: 1px solid var(--gs-secondary-border-subtle);
+  margin: 0.5em 0;
+  resize: both;
+}
+
+.palette-theme-default .palette-choices select,
+.palette-theme-default .palette-selected select {
+  min-width: 100%;
+  width: auto;
+  margin: 0;
+  border: none;
+}
+
+/* Table columns */
+th.actions,
+td.actions {
+  width: 13em;
+}
+th.selection {
+	width: 1%; /* use as few space as possible */
+}
+
+/* Input checkboxes */
+.form-check {
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 0.5em;
+  margin-bottom: 0.125rem;
+}
+.form-check-input {
+  width: 1em;
+  height: 1em;
+  margin-top: 0.25em;
+  vertical-align: top;
+}
+.form-check-label {
+  display: inline-block;
+}
+/* special case for the form ion the header */
+#header .form-check {
+  display: inline-block;
+}
+
+/*----------------
+Edit layer
+----------------*/
+
+/* Controls underneath native bounding box eg. calculate from data, from CRS */
+.bounding-box-controls a,
+#latLonBoundingBox a.computeLink { 
+  display: block;
+  margin-bottom: 1em;
+}
+
+.gwc-remove-link {
+  float: right;
+  margin-top: 2px;
+}
+
+
+/*--------------
+Style editor
+--------------*/
+
+/* Fullscreen */
+#fullscreen-div {
+  float: right;
+  display: block;
+  margin-top: 0px;
+  margin-right: 0px;
+  padding: 4px 0px;
+  position: relative;
+  z-index: 11;
+}
+#fullscreen-div img {
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  background: url(../img/icons/silk/arrow_out.png) no-repeat;
+}
+#page.fullscreen {
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  padding: 0px;
+  border-right: 10px;
+  margin: 0px !important;
+  overflow-y: hidden;
+  z-index: 9;
+  background: var(--gs-body-bg);
+}
+.fullscreen-image-in {
+  background: url(../img/icons/silk/arrow_inwards.png) no-repeat !important;
+}
+.fullscreen #header-title {
+   font-size: 12px;
+   font-weight: bold;
+}
+.fullscreen #header-description {
+   display: none;
+}
+.fullscreen #styleForm {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+.fullscreen #styleForm #style-context {
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+}
+.fullscreen #styleForm #style-context .tab-panel {
+  overflow: auto;
+  height: calc(100vh - 155px);
+}
+.fullscreen #styleForm #style-editor {
+  -webkit-box-ordinal-group: 1;
+  -moz-box-ordinal-group: 1;
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;
+  width: 50%;
+  padding: 10px;
+  height: 100%;
+}
+
+/* Style editor code container */
+.codemirror {
+  border: 1px solid var(--gs-dark);
+  padding-bottom: 3px;
+}
+
+/*----------------------------
+  Customize Select2 appearance
+------------------------------*/
+
+.select2.select2-container--default {
+  width: 100% !important;
+}
+.select2-container--default .select2-selection--single {
+  border: var(--gs-border-width) solid var(--gs-border-color);
+  background-color: var(--gs-body-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 100%;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+  border-color: var(--gs-body-color) transparent transparent transparent;
+}
+.select2-search--dropdown,
+.select2-results__options {
+  padding: 0.125em;
+  background-color: var(--gs-body-bg);
+}
+.select2-results__options .select2-results__option {
+  height: 2em;
+}
+.select2-results__options .select2-results__option--selected {
+  background-color: var(--gs-primary) !important;
+}
+.select2-container--default .select2-results > .select2-results__options {
+  max-height: 300px;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: 0.25em;   
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--gs-body-color);
+  line-height: 1.125em;
+}
+li.select2-results__option {
+  max-width: 100%;
+  overflow: hidden;
+  /*Altered two below to make word wrap work */
+  word-wrap: break-word !important;
+  white-space: normal;
+}
+
+/* Error message */
+.traceback {
+  padding-top: 16px;
+  white-space: pre;
+}
