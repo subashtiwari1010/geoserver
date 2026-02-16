@@ -3,19 +3,6 @@
 General styles
 -----------------------*/
 
-.help {
-  padding: 1em 2em;
-}
-.help ol, ul ul {
-  color:black;
-}
-.help ol li {
-  display:list-item;
-}
-.help p {
-  color: black;
-}
-
 .error, .notice, .success { /* override blueprint.css */
   border: 0 none transparent;
   margin-bottom: 0;
