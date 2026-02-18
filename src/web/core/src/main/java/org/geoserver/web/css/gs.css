@@ -1027,3 +1027,11 @@ choiceItem, choiceList items
 .choiceList > * label {
   display: inline;
 }
+
+/* logs textarea */
+#logs {
+  height: calc(100vh - 14.5em);
+}
+#dumpContent {
+  height: calc(100vh - 17.5em);
+}
