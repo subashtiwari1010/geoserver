@@ -957,7 +957,7 @@ table > tbody > tr:nth-of-type(odd) > * {
 .action-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1646,4 +1646,18 @@ button.outline-danger,
   --gs-btn-disabled-bg: transparent;
   --gs-btn-disabled-border-color: #dc3545;
   --gs-gradient: none;
+}
+
+/* Toggle user/groups */
+form a.expanded, form a.collapsed {
+  background-image: url(../img/icons/silk/bullet_arrow_down.png);
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  padding-left: 16px;
+  height: 18px;
+  font-weight: bold;
+}
+
+form a.collapsed {
+  background-image: url(../img/icons/silk/bullet_arrow_right.png);
 }
