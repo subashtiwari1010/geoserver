@@ -50,7 +50,7 @@
   --gs-dark-border-subtle: #adb5bd;
   --gs-white-rgb: 255, 255, 255;
   --gs-black-rgb: 0, 0, 0;
-  --gs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --gs-font-sans-serif: "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --gs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --gs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --gs-body-font-family: var(--gs-font-sans-serif);
@@ -1483,8 +1483,9 @@ form a.expanded, form a.collapsed {
   font-weight: bold;
 }
 
-form a.collapsed {
-  background-image: url(../img/icons/silk/bullet_arrow_right.png);
+#sidebar-close {
+  font-size: 0.75rem;
+  padding: 0.5rem;
 }
 
 /*---------------
