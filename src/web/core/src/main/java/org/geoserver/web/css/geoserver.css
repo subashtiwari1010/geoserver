@@ -312,12 +312,14 @@ fieldset > * {
   margin-bottom: 0.5rem;
 }
 
-fieldset + fieldset {
+/* fieldset + fieldset {
   margin-top: 0.5rem;
-}
+} */
 
 fieldset {
-  padding: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: var(--gs-body-bg);
+  border-radius: var(--gs-border-radius);
 }
 
 form input[type=text],
@@ -327,7 +329,7 @@ form input[type=file],
 form select,
 form .select2,
 form textarea  {
-  max-width: 50ch;
+  /* max-width: 50ch; */
 }
 
 a {
@@ -824,7 +826,7 @@ table > tbody > tr:nth-of-type(odd) > * {
 }
 
 .tab-panel {
-  padding: 1rem 0;
+  padding: 0.5rem;
 }
 
 .paginator {
@@ -1932,4 +1934,41 @@ label.gs-switch-label {
   .gs-locale-selector select {
     min-height: 2.75em;
   }
+}
+
+/* Generic two-column form grid for resource/edit pages */
+.gs-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  align-items: flex-start;
+}
+.gs-form-grid-vertical {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 0.5rem;
+  align-items: flex-start;
+}
+.gs-form-grid > .gs-form-grid-full,
+.gs-form-grid > .toolbar-sticky {
+  grid-column: 1 / -1;
+}
+.gs-form-grid > *,
+.gs-form-grid-vertical > * {
+  height: -webkit-fill-available;
+}
+@media (max-width: 900px) {
+  .gs-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.toolbar-sticky {
+  margin-top: 0.5rem !important;
+}
+
+#page:not(:has(.tab-panel)),
+.tab-panel {
+  background-color: var(--gs-secondary-bg);
 }

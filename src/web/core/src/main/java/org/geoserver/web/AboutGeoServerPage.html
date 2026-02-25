@@ -1,9 +1,9 @@
 <html>
   <body>
     <wicket:extend>
-      <form>
+      <form class="gs-form-grid">
           <wicket:container wicket:id="privateInfo">
-               <fieldset  class="mt-3">
+               <fieldset  class="mt-3 gs-form-grid-full">
                  <legend>
                    <wicket:message key="buildInformation">Build Information</wicket:message>
                  </legend>
@@ -35,7 +35,7 @@
                  </div>
                </fieldset>
           </wicket:container>
-       <fieldset>
+       <fieldset class="gs-form-grid-full">
            <legend><wicket:message key="moreInformation">More Information</wicket:message></legend>
            <p>
              <wicket:message key="introduction"></wicket:message>
@@ -53,7 +53,7 @@
              </div>
            </p>
        </fieldset>
-       <fieldset>
+       <fieldset class="gs-form-grid-full">
            <legend><wicket:message key="usefulLinks">Useful Links</wicket:message></legend>
              <div class="gn-unordered-list-class">
               <div class="gn-list-item-class">
