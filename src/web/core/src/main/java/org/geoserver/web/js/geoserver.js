@@ -38,7 +38,8 @@
             }
             const tabRowBoundingClientRect = tabRow ? tabRow.getBoundingClientRect() : { height: 0 };
             const tableHeaderTop = tabRowBoundingClientRect.height + pageHeaderBoundingClientRect.height;
-            if (tableHeader) {
+            const isTableHeaderInsideModal = tableHeader && tableHeader.closest('.modal-dialog');
+            if (tableHeader && !isTableHeaderInsideModal) {
                 tableHeader.style.top = `${tableHeaderTop}px`;
             }
         }
