@@ -2175,6 +2175,10 @@ label.gs-switch-label {
 .gs-sidebar-suggestion-option:hover {
   background: var(--gs-secondary-bg);
 }
+.gs-suggestion-highlight {
+  background-color: var(--gs-warning-bg-subtle);
+  color: var(--gs-warning-text-emphasis);
+}
 
 .gs-sidebar-content-wrapper {
   margin: 0;
@@ -2234,7 +2238,6 @@ span.gs-count {
   justify-content: center;
   width: 1.25rem;
   height: 1.25rem;
-  background: var(--gs-body-bg);
   font-size: 0.75em;
   font-weight: 700;
 }
@@ -2245,6 +2248,26 @@ span.gs-count {
 .gs-sidebar-item svg {
   height: 1rem;
   width: 1rem;
+}
+.gs-sidebar-pin-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+.gs-sidebar-item .gs-sidebar-tree-toggle:hover .gs-sidebar-pin-toggle,
+.gs-sidebar-item .gs-sidebar-tree-toggle:focus-within .gs-sidebar-pin-toggle {
+  opacity: 1;
+}
+.gs-sidebar-pin-icon svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.gs-sidebar-pin-toggle.is-pinned .gs-sidebar-pin-icon svg {
+  color: var(--gs-primary);
+  transform: rotate(45deg);
 }
 .gs-sidebar-section-header {
   display: flex;

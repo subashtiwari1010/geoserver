@@ -196,6 +196,9 @@
                     <span wicket:id="pinnedLabel" class="gs-list-name">PINNED</span>
                     <span wicket:id="pinnedCount" class="gs-count">0</span>
                   </div>
+                  <ul id="gs-pinned-workspaces" class="gs-pinned-workspaces">
+                    <!-- Pinned workspaces will be managed client-side -->
+                  </ul>
                 </li>
                 <li class="gs-sidebar-item">
                   <div wicket:id="globalToggle" class="gs-sidebar-section-header">
@@ -228,6 +231,13 @@
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
                         <a href="#" wicket:id="workspaceLink" class="gs-sidebar-workspace-link gs-list-name"><span wicket:id="workspaceLabel">workspace</span></a>
                         <span wicket:id="workspaceCount" class="gs-count">0</span>
+                        <span class="gs-sidebar-pin-toggle" role="button" tabindex="0" aria-label="Pin workspace">
+                          <span class="gs-sidebar-pin-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M16 3H8v2l2 4v3.59L8.71 14.88a1 1 0 0 0 0 1.41l.71.71 2.58-2.58L15 18v3h2v-4.59l-2-2V9l2-4V3z"></path>
+                            </svg>
+                          </span>
+                        </span>
                       </button>
                       <ul wicket:id="workspaceLayersContainer" hidden="hidden" class="gs-sidebar-workspace-layers">
                         <li wicket:id="workspaceLayers">

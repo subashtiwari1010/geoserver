@@ -171,6 +171,60 @@
                 suggestions.querySelectorAll('.gs-sidebar-suggestion-list > li')
             );
 
+            // Cache original labels so we can safely apply/remove highlights
+            options.forEach(function(option) {
+                if (!option.getAttribute('data-label')) {
+                    var labelSpan = option.querySelector('span:last-child');
+                    var text = labelSpan && labelSpan.textContent
+                        ? labelSpan.textContent.trim()
+                        : (option.textContent || '').trim();
+                    option.setAttribute('data-label', text);
+                }
+            });
+
+            function escapeHtml(str) {
+                return str.replace(/[&<>"']/g, function(ch) {
+                    switch (ch) {
+                        case '&': return '&amp;';
+                        case '<': return '&lt;';
+                        case '>': return '&gt;';
+                        case '"': return '&quot;';
+                        case "'": return '&#39;';
+                        default: return ch;
+                    }
+                });
+            }
+
+            function updateOptionHighlight(option, query) {
+                var labelSpan = option.querySelector('span:last-child');
+                if (!labelSpan) return;
+
+                var original = option.getAttribute('data-label') || '';
+                if (!query) {
+                    labelSpan.textContent = original;
+                    return;
+                }
+
+                var lowerLabel = original.toLowerCase();
+                var lowerQuery = query.toLowerCase();
+                var idx = lowerLabel.indexOf(lowerQuery);
+                if (idx === -1) {
+                    labelSpan.textContent = original;
+                    return;
+                }
+
+                var before = original.slice(0, idx);
+                var match = original.slice(idx, idx + query.length);
+                var after = original.slice(idx + query.length);
+
+                labelSpan.innerHTML =
+                    escapeHtml(before) +
+                    '<span class="gs-suggestion-highlight">' +
+                    escapeHtml(match) +
+                    '</span>' +
+                    escapeHtml(after);
+            }
+
             function updateSuggestions() {
                 const query = (searchInput.value || '').trim().toLowerCase();
                 if (!query) {
@@ -178,6 +232,9 @@
                     optionItems.forEach(function(item) {
                         item.style.display = '';
                         item.removeAttribute('hidden');
+                    });
+                    options.forEach(function(option) {
+                        updateOptionHighlight(option, '');
                     });
                     return;
                 }
@@ -191,6 +248,7 @@
                     if (visible) {
                         item.style.display = '';
                         item.removeAttribute('hidden');
+                        updateOptionHighlight(button, searchInput.value || '');
                         anyVisible = true;
                     } else {
                         item.style.display = 'none';
@@ -376,6 +434,184 @@
         }
         initializeSidebarWorkspaceLayerPagination();
 
+        // Sidebar pinned workspaces: pin/unpin workspaces and persist in localStorage
+        function initializeSidebarPinnedWorkspaces() {
+            var STORAGE_KEY = 'gs-pinned-workspaces';
+            var pinnedList = document.getElementById('gs-pinned-workspaces');
+            var workspaceList = document.getElementById('gs-workspaces-list');
+            if (!pinnedList || !workspaceList) return;
+
+            function loadPinned() {
+                try {
+                    var raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return [];
+                    var parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.filter(function(name) {
+                            return typeof name === 'string' && name.trim().length;
+                        });
+                    }
+                } catch (e) {
+                    // ignore parse errors and fall back to empty
+                }
+                return [];
+            }
+
+            function savePinned(names) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(names));
+                } catch (e) {
+                    // ignore storage errors
+                }
+            }
+
+            function getWorkspaceEntries() {
+                var items = Array.prototype.slice.call(
+                    workspaceList.querySelectorAll(':scope > .gs-sidebar-item')
+                );
+                return items.map(function(item) {
+                    var toggle = item.querySelector('.gs-sidebar-tree-toggle');
+                    if (!toggle) return null;
+                    var link = toggle.querySelector('.gs-sidebar-workspace-link');
+                    if (!link) return null;
+                    var name = (link.textContent || '').trim();
+                    var href = link.getAttribute('href') || '#';
+                    var pinToggle = toggle.querySelector('.gs-sidebar-pin-toggle');
+                    var countEl = toggle.querySelector('.gs-count');
+                    var countText = countEl && countEl.textContent
+                        ? countEl.textContent.trim()
+                        : '';
+                    return {
+                        element: item,
+                        toggle: toggle,
+                        link: link,
+                        pinToggle: pinToggle,
+                        name: name,
+                        href: href,
+                        countText: countText
+                    };
+                }).filter(function(entry) { return entry && entry.name; });
+            }
+
+            function renderPinnedList(pinnedNames, workspaceEntries) {
+                pinnedList.innerHTML = '';
+                pinnedNames.forEach(function(name) {
+                    var match = workspaceEntries.find(function(entry) { return entry.name === name; });
+                    if (!match) return;
+
+                    var li = document.createElement('li');
+                    li.className = 'gs-sidebar-item';
+
+                    var button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'gs-sidebar-tree-toggle';
+
+                    var iconWrapper = document.createElement('span');
+                    iconWrapper.className = 'gs-sidebar-item-icon';
+                    iconWrapper.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="currentColor">' +
+                        '<path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path>' +
+                        '</svg>';
+
+                    var link = document.createElement('a');
+                    link.className = 'gs-sidebar-workspace-link gs-list-name';
+                    link.textContent = name;
+                    link.href = match.href;
+
+                    var count = document.createElement('span');
+                    count.className = 'gs-count';
+                    count.textContent = match.countText || '0';
+
+                    var pinToggle = document.createElement('span');
+                    pinToggle.className = 'gs-sidebar-pin-toggle is-pinned';
+                    pinToggle.setAttribute('role', 'button');
+                    pinToggle.setAttribute('tabindex', '0');
+                    pinToggle.setAttribute('aria-label', 'Unpin workspace');
+
+                    var pinIcon = document.createElement('span');
+                    pinIcon.className = 'gs-sidebar-pin-icon';
+                    pinIcon.setAttribute('aria-hidden', 'true');
+                    pinIcon.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="currentColor">' +
+                        '<path d="M16 3H8v2l2 4v3.59L8.71 14.88a1 1 0 0 0 0 1.41l.71.71 2.58-2.58L15 18v3h2v-4.59l-2-2V9l2-4V3z"></path>' +
+                        '</svg>';
+
+                    pinToggle.appendChild(pinIcon);
+
+                    // Unpin from pinned section
+                    function handleUnpin(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        var idx = pinnedNames.indexOf(name);
+                        if (idx !== -1) {
+                            pinnedNames.splice(idx, 1);
+                            savePinned(pinnedNames);
+                            renderPinnedList(pinnedNames, workspaceEntries);
+                            updatePinIconStates(pinnedNames, workspaceEntries);
+                        }
+                    }
+
+                    pinToggle.addEventListener('click', handleUnpin);
+                    pinToggle.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            handleUnpin(e);
+                        }
+                    });
+
+                    button.appendChild(iconWrapper);
+                    button.appendChild(link);
+                    button.appendChild(count);
+                    button.appendChild(pinToggle);
+
+                    li.appendChild(button);
+                    pinnedList.appendChild(li);
+                });
+            }
+
+            function updatePinIconStates(pinnedNames, workspaceEntries) {
+                workspaceEntries.forEach(function(entry) {
+                    if (!entry.pinToggle) return;
+                    var isPinned = pinnedNames.indexOf(entry.name) !== -1;
+                    entry.pinToggle.classList.toggle('is-pinned', isPinned);
+                    entry.pinToggle.setAttribute(
+                        'aria-label',
+                        isPinned ? 'Unpin workspace' : 'Pin workspace'
+                    );
+                });
+            }
+
+            var workspaceEntries = getWorkspaceEntries();
+            var pinnedNames = loadPinned();
+            renderPinnedList(pinnedNames, workspaceEntries);
+            updatePinIconStates(pinnedNames, workspaceEntries);
+
+            workspaceEntries.forEach(function(entry) {
+                if (!entry.pinToggle) return;
+                entry.pinToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var name = entry.name;
+                    var idx = pinnedNames.indexOf(name);
+                    if (idx === -1) {
+                        pinnedNames.push(name);
+                    } else {
+                        pinnedNames.splice(idx, 1);
+                    }
+                    savePinned(pinnedNames);
+                    renderPinnedList(pinnedNames, workspaceEntries);
+                    updatePinIconStates(pinnedNames, workspaceEntries);
+                });
+
+                entry.pinToggle.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        entry.pinToggle.click();
+                    }
+                });
+            });
+        }
+        initializeSidebarPinnedWorkspaces();
+
         // Sidebar tree toggles: right chevron when closed, down when open
         function initializeSidebarWorkspaceTree() {
             const toggles = document.querySelectorAll('.gs-sidebar-tree-toggle');
@@ -429,7 +665,12 @@
                 toggle.setAttribute('aria-expanded', isOpen() ? 'true' : 'false');
 
                 toggle.addEventListener('click', function(e) {
-                    if (e.target && e.target.closest && e.target.closest('.gs-sidebar-workspace-link')) {
+                    if (
+                        e.target &&
+                        e.target.closest &&
+                        (e.target.closest('.gs-sidebar-workspace-link') ||
+                            e.target.closest('.gs-sidebar-pin-toggle'))
+                    ) {
                         return;
                     }
                     isOpen() ? closeList() : openList();
