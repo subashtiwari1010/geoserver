@@ -142,3 +142,12 @@ aside.gs-sidebar {
 .gs-sidebar mark {
     padding: 0;
 }
+[data-gs-theme=dark] .gs-toggle-button > img {
+    filter: brightness(0) invert(1);
+}
+
+.gs-no-data {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    color: var(--gs-secondary-color);
+}
