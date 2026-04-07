@@ -118,6 +118,7 @@ public class MapPreviewPage extends GeoServerBasePage {
                         @Override
                         public void populateItem(ListItem<ExternalLink> item) {
                             final ExternalLink link = item.getModelObject();
+                            item.setVisible(link != null && link.isVisible());
                             item.add(link);
                         }
                     };
