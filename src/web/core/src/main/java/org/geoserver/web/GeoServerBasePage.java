@@ -379,6 +379,7 @@ public class GeoServerBasePage extends WebPage implements IAjaxIndicatorAware {
         // sidebar
         boolean legacyHome = (this instanceof GeoServerHomePage) && GeoServerHomePage.isLegacyHomepageSelectorEnabled();
         NavigationTreePanel sidebar = new NavigationTreePanel("sidebar");
+        sidebar.setOutputMarkupId(true);
         sidebar.setVisible(!legacyHome);
         add(sidebar);
         BreadcrumbNavigationPanel breadcrumb = new BreadcrumbNavigationPanel("breadcrumbPanel");
